@@ -1,0 +1,51 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Main Shield -->
+  <path d="M16 2 L24 6 L24 14 C24 21 16 29 16 29 C16 29 8 21 8 14 L8 6 L16 2 Z" 
+        fill="url(#shieldGradient)" 
+        stroke="url(#shieldBorder)" 
+        stroke-width="1"/>
+  
+  <!-- Inner Shield Detail -->
+  <path d="M16 4 L22 7 L22 13 C22 19 16 26 16 26 C16 26 10 19 10 13 L10 7 L16 4 Z" 
+        fill="url(#innerGradient)" 
+        opacity="0.8"/>
+  
+  <!-- Code Brackets -->
+  <path d="M12 10 L10 12 L10 14 L12 16" 
+        stroke="#06b6d4" 
+        stroke-width="1.5" 
+        stroke-linecap="round" 
+        fill="none"/>
+  <path d="M20 10 L22 12 L22 14 L20 16" 
+        stroke="#06b6d4" 
+        stroke-width="1.5" 
+        stroke-linecap="round" 
+        fill="none"/>
+  
+  <!-- Central TS Monogram -->
+  <text x="16" y="15" 
+        font-family="Arial, sans-serif" 
+        font-weight="bold" 
+        font-size="6" 
+        text-anchor="middle" 
+        fill="#ffffff">TS</text>
+  
+  <!-- Gradients -->
+  <defs>
+    <linearGradient id="shieldGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e40af;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#3b82f6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1e3a8a;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="innerGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#8b5cf6;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#6366f1;stop-opacity:0.4" />
+    </linearGradient>
+    
+    <linearGradient id="shieldBorder" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#06b6d4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+</svg> 

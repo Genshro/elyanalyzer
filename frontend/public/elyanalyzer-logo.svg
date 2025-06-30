@@ -1,0 +1,73 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Outer Glow -->
+  <circle cx="32" cy="32" r="30" fill="url(#outerGlow)" opacity="0.2"/>
+  
+  <!-- Daisy Petals -->
+  <!-- Top petal -->
+  <ellipse cx="32" cy="18" rx="4" ry="12" fill="url(#petalGradient)" transform="rotate(0 32 32)"/>
+  <!-- Top-right petal -->
+  <ellipse cx="32" cy="18" rx="4" ry="12" fill="url(#petalGradient)" transform="rotate(45 32 32)"/>
+  <!-- Right petal -->
+  <ellipse cx="32" cy="18" rx="4" ry="12" fill="url(#petalGradient)" transform="rotate(90 32 32)"/>
+  <!-- Bottom-right petal -->
+  <ellipse cx="32" cy="18" rx="4" ry="12" fill="url(#petalGradient)" transform="rotate(135 32 32)"/>
+  <!-- Bottom petal -->
+  <ellipse cx="32" cy="18" rx="4" ry="12" fill="url(#petalGradient)" transform="rotate(180 32 32)"/>
+  <!-- Bottom-left petal -->
+  <ellipse cx="32" cy="18" rx="4" ry="12" fill="url(#petalGradient)" transform="rotate(225 32 32)"/>
+  <!-- Left petal -->
+  <ellipse cx="32" cy="18" rx="4" ry="12" fill="url(#petalGradient)" transform="rotate(270 32 32)"/>
+  <!-- Top-left petal -->
+  <ellipse cx="32" cy="18" rx="4" ry="12" fill="url(#petalGradient)" transform="rotate(315 32 32)"/>
+  
+  <!-- Center of daisy -->
+  <circle cx="32" cy="32" r="8" fill="url(#centerGradient)" stroke="#f59e0b" stroke-width="1"/>
+  
+  <!-- Inner center details -->
+  <circle cx="32" cy="32" r="6" fill="url(#innerCenter)" opacity="0.8"/>
+  
+  <!-- Natural daisy center without text -->
+  
+  <!-- Small sparkles around flower -->
+  <circle cx="22" cy="22" r="1" fill="#fbbf24" opacity="0.8">
+    <animate attributeName="opacity" values="0.8;0.3;0.8" dur="2s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="42" cy="22" r="0.8" fill="#f59e0b" opacity="0.6">
+    <animate attributeName="opacity" values="0.6;0.2;0.6" dur="1.5s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="42" cy="42" r="1.2" fill="#fbbf24" opacity="0.7">
+    <animate attributeName="opacity" values="0.7;0.2;0.7" dur="1.8s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="22" cy="42" r="0.9" fill="#f59e0b" opacity="0.5">
+    <animate attributeName="opacity" values="0.5;0.1;0.5" dur="2.2s" repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- Gradients -->
+  <defs>
+    <!-- Petal gradient - white to soft pink -->
+    <linearGradient id="petalGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#fdf2f8;stop-opacity:0.9" />
+      <stop offset="100%" style="stop-color:#f9a8d4;stop-opacity:0.8" />
+    </linearGradient>
+    
+    <!-- Center gradient - yellow/orange -->
+    <radialGradient id="centerGradient" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:1" />
+      <stop offset="70%" style="stop-color:#f59e0b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#d97706;stop-opacity:1" />
+    </radialGradient>
+    
+    <!-- Inner center -->
+    <radialGradient id="innerCenter" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#fef3c7;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:0.8" />
+    </radialGradient>
+    
+    <!-- Outer glow -->
+    <radialGradient id="outerGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:0.3" />
+      <stop offset="100%" style="stop-color:#f9a8d4;stop-opacity:0.1" />
+    </radialGradient>
+  </defs>
+</svg> 

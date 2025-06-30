@@ -1,0 +1,30 @@
+                  ┌────────────────────────────────────┐
+                  │              Web UI                │
+                  │  (React + TypeScript + Auth)       │
+                  └──────────────┬─────────────────────┘
+                                 │ REST API + JWT
+                    ┌────────────▼────────────┐
+                    │        Backend (Go)     │
+                    │ - Fiber API             │
+                    │ - JWT + OAuth           │
+                    │ - PostgreSQL + Redis    │
+                    │ - PDF Reports           │
+                    └─────┬──────┬─────┬──────┘
+                          │      │     │
+                          │      │     └──────────┐
+                          │      │                │
+          ┌───────────────┘      │                │
+          │                      │                │
+  ┌───────▼────────┐    ┌────────▼───────┐   ┌─────▼─────┐
+  │ Desktop Agent  │    │ Analysis Engine │  │ Database  │
+  │ (Tauri)        │◄──►│ (Go → Rust)     │  │ Supabase  │
+  │ - File Scanner │gRPC│ - AST Parsers   │  │ + Redis   │
+  │ - UI Reports   │    │ - AI Patterns   │  │           │
+  │ - PDF Export   │    │ - Dependency    │  │           │
+  └────────────────┘    └─────────────────┘  └───────────┘
+                                 │
+                        ┌────────▼─────────┐
+                        │   Shared Types   │
+                        │ (Go structs +    │
+                        │  TypeScript)     │
+                        └──────────────────┘

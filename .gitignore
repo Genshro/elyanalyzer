@@ -1,0 +1,94 @@
+# Go
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+go.work.sum
+
+# Build outputs
+/backend/bin/
+/analysis-engine/bin/
+dist/
+build/
+target/
+*.msi
+*.dmg
+*.app
+
+# Dependencies
+node_modules/
+*/node_modules/
+vendor/
+
+# Environment files
+.env
+.env.local
+.env.production
+.env.development
+*.env
+
+# Database
+*.db
+*.sqlite
+
+# Logs
+*.log
+logs/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Docker
+.docker/
+
+# PDF reports (generated files)
+reports/*.pdf
+*.pdf
+
+# Frontend
+.next/
+.nuxt/
+.cache/
+
+# Desktop app
+/desktop-app/src-tauri/target/
+/desktop-app/dist/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+
+# Package manager locks (optional - team preference)
+package-lock.json
+yarn.lock
+Cargo.lock
+
+# Critical Business Logic (Keep Private)
+analysis-engine/
+backend/
+reports/
+binaries/
+
+# Compiled analysis tools
+scanner
+scanner.exe
+analysis-engine
+analysis-engine.exe 

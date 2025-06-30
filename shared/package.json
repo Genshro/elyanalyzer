@@ -1,0 +1,17 @@
+{
+  "name": "@codesentinel/shared-types",
+  "version": "1.0.0",
+  "description": "Shared types between Go backend and TypeScript frontend",
+  "main": "types/index.ts",
+  "types": "types/index.ts",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch"
+  },
+  "keywords": ["typescript", "types", "codesentinel"],
+  "private": true,
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "author": "Ahmet Çetin"
+} 
