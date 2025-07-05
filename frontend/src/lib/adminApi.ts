@@ -1,10 +1,21 @@
-import { supabase } from './supabase'
+import { supabase, authHelpers } from './supabase'
 
 // Admin API functions for fetching system data
 export const adminApi = {
   // Get all users count
   getUserStats: async () => {
     try {
+      // Check if user is authenticated and is admin
+      const { data: { user }, error: userError } = await supabase.auth.getUser()
+      if (userError || !user) {
+        throw new Error('User not authenticated')
+      }
+
+      const isAdmin = await authHelpers.isAdmin()
+      if (!isAdmin) {
+        throw new Error('Access denied: Admin privileges required')
+      }
+
       const { count, error } = await supabase
         .from('users')
         .select('*', { count: 'exact', head: true })
@@ -13,13 +24,24 @@ export const adminApi = {
       return { totalUsers: count || 0 }
     } catch (error) {
       console.error('Error fetching user stats:', error)
-      return { totalUsers: 0 }
+      throw error
     }
   },
 
   // Get all projects count
   getProjectStats: async () => {
     try {
+      // Check if user is authenticated and is admin
+      const { data: { user }, error: userError } = await supabase.auth.getUser()
+      if (userError || !user) {
+        throw new Error('User not authenticated')
+      }
+
+      const isAdmin = await authHelpers.isAdmin()
+      if (!isAdmin) {
+        throw new Error('Access denied: Admin privileges required')
+      }
+
       const { count, error } = await supabase
         .from('projects')
         .select('*', { count: 'exact', head: true })
@@ -28,13 +50,24 @@ export const adminApi = {
       return { totalProjects: count || 0 }
     } catch (error) {
       console.error('Error fetching project stats:', error)
-      return { totalProjects: 0 }
+      throw error
     }
   },
 
   // Get analysis results stats
   getAnalysisStats: async () => {
     try {
+      // Check if user is authenticated and is admin
+      const { data: { user }, error: userError } = await supabase.auth.getUser()
+      if (userError || !user) {
+        throw new Error('User not authenticated')
+      }
+
+      const isAdmin = await authHelpers.isAdmin()
+      if (!isAdmin) {
+        throw new Error('Access denied: Admin privileges required')
+      }
+
       // Total scans
       const { count: totalScans } = await supabase
         .from('analysis_results')
@@ -62,13 +95,24 @@ export const adminApi = {
       }
     } catch (error) {
       console.error('Error fetching analysis stats:', error)
-      return { totalScans: 0, scansToday: 0, criticalIssues: 0 }
+      throw error
     }
   },
 
   // Get all users (admin only)
   getAllUsers: async () => {
     try {
+      // Check if user is authenticated and is admin
+      const { data: { user }, error: userError } = await supabase.auth.getUser()
+      if (userError || !user) {
+        throw new Error('User not authenticated')
+      }
+
+      const isAdmin = await authHelpers.isAdmin()
+      if (!isAdmin) {
+        throw new Error('Access denied: Admin privileges required')
+      }
+
       const { data, error } = await supabase
         .from('users')
         .select('id, email, name, created_at')
@@ -78,13 +122,24 @@ export const adminApi = {
       return data || []
     } catch (error) {
       console.error('Error fetching users:', error)
-      return []
+      throw error
     }
   },
 
   // Get recent system activity
   getSystemActivity: async () => {
     try {
+      // Check if user is authenticated and is admin
+      const { data: { user }, error: userError } = await supabase.auth.getUser()
+      if (userError || !user) {
+        throw new Error('User not authenticated')
+      }
+
+      const isAdmin = await authHelpers.isAdmin()
+      if (!isAdmin) {
+        throw new Error('Access denied: Admin privileges required')
+      }
+
       // Get recent user registrations
       const { data: newUsers } = await supabase
         .from('users')
@@ -133,7 +188,7 @@ export const adminApi = {
 
     } catch (error) {
       console.error('Error fetching system activity:', error)
-      return []
+      throw error
     }
   }
 }

@@ -2,14 +2,15 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { 
   ShieldCheckIcon, 
-  LightBulbIcon, 
   UsersIcon,
   HeartIcon,
-  CodeBracketIcon,
   GlobeAltIcon,
   RocketLaunchIcon,
-  EyeIcon
+  EyeIcon,
+  BeakerIcon,
+  StarIcon
 } from '@heroicons/react/24/outline';
+import Footer from '../components/Footer';
 
 const About: React.FC = () => {
   const values = [
@@ -19,9 +20,9 @@ const About: React.FC = () => {
       description: "We believe your code is your intellectual property. That's why we built ElyAnalyzer to work entirely offline, ensuring your code never leaves your machine."
     },
     {
-      icon: LightBulbIcon,
-      title: "Innovation",
-      description: "We're constantly pushing the boundaries of what's possible in code analysis, bringing cutting-edge technology to developers worldwide."
+      icon: BeakerIcon,
+      title: "Innovation Pioneer",
+      description: "We created the world's first AI hallucination detection technology for code analysis, preventing developers from implementing fictional APIs and non-existent libraries."
     },
     {
       icon: UsersIcon,
@@ -55,18 +56,18 @@ const About: React.FC = () => {
     },
     {
       year: "Q2 2024",
-      title: "15 Analyzers",
-      description: "Expanded our analysis capabilities to cover architecture, performance, API design, testing, and 11 other critical areas of software development."
+      title: "AI Hallucination Detection",
+      description: "Breakthrough innovation: created the world's first AI hallucination detector for code analysis, identifying fictional APIs and non-existent libraries suggested by AI tools."
     },
     {
       year: "Q3 2024",
-      title: "Desktop-First",
-      description: "Launched our Tauri-based desktop application, ensuring developers can analyze their code without any internet connection or data transmission."
+      title: "15 Analyzers & Desktop-First",
+      description: "Expanded to 15 specialized analyzers and launched our Tauri-based desktop application, ensuring complete privacy with offline processing."
     },
     {
       year: "2025",
       title: "Global Launch",
-      description: "Released ElyAnalyzer to developers worldwide with support for 14+ programming languages and dual output formats (PDF + JSON)."
+      description: "Released ElyAnalyzer to developers worldwide with support for 14+ programming languages and dual output formats (Interactive HTML + JSON)."
     }
   ];
 
@@ -87,6 +88,12 @@ const About: React.FC = () => {
             transition={{ duration: 0.8 }}
             className="text-center"
           >
+            <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-purple-500/10 to-pink-500/10 backdrop-blur-xl border border-purple-500/20 rounded-full px-6 py-3 mb-6">
+              <StarIcon className="h-5 w-5 text-purple-400" />
+              <span className="text-sm font-medium text-purple-300">
+                🌍 World's First AI Hallucination Detection
+              </span>
+            </div>
             <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
               About
               <span className="gradient-text">
@@ -94,7 +101,8 @@ const About: React.FC = () => {
               </span>
             </h1>
             <p className="text-xl text-slate-200 mb-8 max-w-3xl mx-auto">
-              We're on a mission to revolutionize code analysis by putting privacy, quality, and developer experience at the heart of everything we do.
+              We're on a mission to revolutionize code analysis by putting privacy, quality, and developer experience at the heart of everything we do. 
+              Featuring the world's first AI hallucination detection technology.
             </p>
             <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-red-500/10 to-white/10 backdrop-blur-xl border border-red-500/20 rounded-full px-6 py-3">
               <span className="text-sm font-medium text-red-300">
@@ -105,6 +113,70 @@ const About: React.FC = () => {
               </span>
             </div>
           </motion.div>
+        </div>
+      </section>
+
+      {/* Revolutionary Technology Section */}
+      <section className="py-20 px-4 bg-gradient-to-r from-purple-900/20 to-pink-900/20">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">
+              <span className="gradient-text">Revolutionary Innovation</span>
+            </h2>
+            <p className="text-xl text-slate-200 max-w-3xl mx-auto">
+              We didn't just build another code analyzer - we created breakthrough technology that doesn't exist anywhere else in the world.
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="space-y-6"
+            >
+              <div className="glass rounded-2xl p-8">
+                <div className="flex items-center mb-4">
+                  <div className="p-3 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-xl mr-4">
+                    <BeakerIcon className="h-8 w-8 text-purple-400" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-white">World's First AI Hallucination Detector</h3>
+                </div>
+                <p className="text-slate-200 leading-relaxed">
+                  Our groundbreaking technology can detect when AI-generated code contains fictional APIs, non-existent libraries, 
+                  or imaginary methods. This prevents developers from wasting hours debugging code that was never meant to work.
+                </p>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="space-y-6"
+            >
+              <div className="glass rounded-2xl p-8">
+                <div className="flex items-center mb-4">
+                  <div className="p-3 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-xl mr-4">
+                    <GlobeAltIcon className="h-8 w-8 text-blue-400" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-white">Dual Output Innovation</h3>
+                </div>
+                <p className="text-slate-200 leading-relaxed">
+                  Beautiful interactive HTML reports for human consumption and structured JSON data for seamless IDE integration. 
+                  No other analyzer offers this perfect balance of visual appeal and technical utility.
+                </p>
+              </div>
+            </motion.div>
+          </div>
         </div>
       </section>
 
@@ -199,7 +271,7 @@ const About: React.FC = () => {
       </section>
 
       {/* Stats */}
-      <section className="py-20 px-4">
+      <section className="py-20 px-4 bg-slate-900/50">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -209,10 +281,11 @@ const About: React.FC = () => {
             className="text-center mb-16"
           >
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-cyan-400">
-                By the Numbers
-              </span>
+              <span className="gradient-text">By the Numbers</span>
             </h2>
+            <p className="text-xl text-slate-300 max-w-3xl mx-auto">
+              The impact and scope of ElyAnalyzer's capabilities
+            </p>
           </motion.div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
@@ -223,9 +296,9 @@ const About: React.FC = () => {
                 whileInView={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="text-center bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10"
+                className="text-center"
               >
-                <div className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-cyan-400 mb-2">
+                <div className="text-4xl md:text-5xl font-bold gradient-text mb-2">
                   {stat.number}
                 </div>
                 <div className="text-slate-300 font-medium">
@@ -238,7 +311,7 @@ const About: React.FC = () => {
       </section>
 
       {/* Timeline */}
-      <section className="py-20 px-4 bg-slate-900/50">
+      <section className="py-20 px-4">
         <div className="max-w-4xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -248,38 +321,35 @@ const About: React.FC = () => {
             className="text-center mb-16"
           >
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-cyan-400">
-                Our Journey
-              </span>
+              <span className="gradient-text">Our Journey</span>
             </h2>
-            <p className="text-xl text-slate-300 max-w-2xl mx-auto">
-              From idea to reality - the story of how ElyAnalyzer came to life
+            <p className="text-xl text-slate-300 max-w-3xl mx-auto">
+              From concept to revolutionary code analysis platform
             </p>
           </motion.div>
 
-          <div className="space-y-12">
+          <div className="space-y-8">
             {timeline.map((item, index) => (
               <motion.div
                 key={item.year}
                 initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, delay: index * 0.1 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true }}
                 className="relative"
               >
-                <div className="flex items-center space-x-8">
-                  <div className="flex-shrink-0 w-24">
-                    <div className="bg-gradient-to-r from-purple-500 to-cyan-500 text-white px-4 py-2 rounded-full text-sm font-bold text-center">
-                      {item.year}
-                    </div>
+                <div className="flex items-center space-x-6">
+                  <div className="flex-shrink-0 w-24 text-right">
+                    <span className="text-lg font-bold gradient-text">{item.year}</span>
                   </div>
-                  <div className="flex-1 bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10">
-                    <h3 className="text-xl font-bold text-white mb-3">{item.title}</h3>
-                    <p className="text-slate-300 leading-relaxed">{item.description}</p>
+                  <div className="flex-shrink-0 w-4 h-4 bg-gradient-to-r from-purple-500 to-cyan-500 rounded-full"></div>
+                  <div className="flex-1 glass rounded-xl p-6">
+                    <h3 className="text-xl font-bold text-white mb-2">{item.title}</h3>
+                    <p className="text-slate-300">{item.description}</p>
                   </div>
                 </div>
                 {index < timeline.length - 1 && (
-                  <div className="absolute left-12 top-16 w-0.5 h-12 bg-gradient-to-b from-purple-500 to-cyan-500"></div>
+                  <div className="absolute left-[7.5rem] top-8 w-0.5 h-8 bg-gradient-to-b from-purple-500/50 to-cyan-500/50"></div>
                 )}
               </motion.div>
             ))}
@@ -287,110 +357,36 @@ const About: React.FC = () => {
         </div>
       </section>
 
-      {/* Technology Stack */}
+      {/* Call to Action */}
       <section className="py-20 px-4">
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-4xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="glass rounded-3xl p-12 text-center"
           >
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-cyan-400">
-                Built with Modern Tech
-              </span>
-            </h2>
-            <p className="text-xl text-slate-300 max-w-3xl mx-auto">
-              We use cutting-edge technologies to deliver the best possible experience
-            </p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-              className="bg-white/5 backdrop-blur-sm rounded-xl p-8 border border-white/10 text-center"
-            >
-              <div className="p-3 bg-gradient-to-r from-orange-500/20 to-red-500/20 rounded-xl w-fit mx-auto mb-6">
-                <CodeBracketIcon className="h-8 w-8 text-orange-400" />
-              </div>
-              <h3 className="text-xl font-bold text-white mb-4">Desktop App</h3>
-              <p className="text-slate-300 mb-4">Tauri + React + TypeScript</p>
-              <p className="text-sm text-slate-400">Cross-platform desktop application with native performance and web technologies</p>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              viewport={{ once: true }}
-              className="bg-white/5 backdrop-blur-sm rounded-xl p-8 border border-white/10 text-center"
-            >
-              <div className="p-3 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-xl w-fit mx-auto mb-6">
-                <GlobeAltIcon className="h-8 w-8 text-blue-400" />
-              </div>
-              <h3 className="text-xl font-bold text-white mb-4">Web Dashboard</h3>
-              <p className="text-slate-300 mb-4">React + TypeScript + Tailwind</p>
-              <p className="text-sm text-slate-400">Modern web interface for progress tracking and gamification features</p>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              viewport={{ once: true }}
-              className="bg-white/5 backdrop-blur-sm rounded-xl p-8 border border-white/10 text-center"
-            >
-              <div className="p-3 bg-gradient-to-r from-green-500/20 to-emerald-500/20 rounded-xl w-fit mx-auto mb-6">
-                <ShieldCheckIcon className="h-8 w-8 text-green-400" />
-              </div>
-              <h3 className="text-xl font-bold text-white mb-4">Analysis Engine</h3>
-              <p className="text-slate-300 mb-4">Go + Rust + AI Models</p>
-              <p className="text-sm text-slate-400">High-performance analysis engine with 15 specialized analyzers</p>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-20 px-4 bg-gradient-to-r from-purple-900/50 to-cyan-900/50">
-        <div className="max-w-4xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-cyan-400">
-                Join Our Mission
-              </span>
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+              <span className="gradient-text">Join the Revolution</span>
             </h2>
             <p className="text-xl text-slate-300 mb-8 max-w-2xl mx-auto">
-              Be part of the privacy-first code analysis revolution. Start your journey with ElyAnalyzer today.
+              Be part of the future of code analysis. Experience the world's first AI hallucination detection 
+              and privacy-first analysis platform.
             </p>
-            
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a
-                href="/download"
-                className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-bold py-4 px-8 rounded-xl text-lg transition-all duration-300 transform hover:scale-105 shadow-lg"
-              >
-                Download Free Now
-              </a>
-              <a
-                href="/features"
-                className="border border-green-500/50 text-green-400 hover:bg-green-500/10 font-bold py-4 px-8 rounded-xl text-lg transition-all duration-300"
-              >
-                Explore Features
-              </a>
+              <button className="btn-primary text-lg px-8 py-4">
+                Download ElyAnalyzer
+              </button>
+              <button className="btn-secondary text-lg px-8 py-4">
+                View on GitHub
+              </button>
             </div>
           </motion.div>
         </div>
       </section>
+
+      <Footer />
     </div>
   );
 };

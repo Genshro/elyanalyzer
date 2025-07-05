@@ -10,13 +10,15 @@ import {
   BugAntIcon,
   ChartBarIcon,
   RocketLaunchIcon,
-  ArrowDownTrayIcon
+  ArrowDownTrayIcon,
 } from '@heroicons/react/24/outline'
 import { supabase, authHelpers } from '../lib/supabase'
 import { adminApi } from '../lib/adminApi'
 import { dashboardApi } from '../lib/dashboardApi'
 import CategoryDashboard from '../components/CategoryDashboard'
 import FutureFeatures from '../components/FutureFeatures'
+import BuyMeCoffeeQR from '../components/BuyMeCoffeeQR'
+import Footer from '../components/Footer'
 
 const Dashboard = () => {
   const navigate = useNavigate()
@@ -24,7 +26,7 @@ const Dashboard = () => {
   const [user, setUser] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [isAdmin, setIsAdmin] = useState(false)
-  const [dashboardData, setDashboardData] = useState<any>(null)
+  const [, setDashboardData] = useState<any>(null)
   const [realTimeStats, setRealTimeStats] = useState({
     totalFiles: 0,
     issuesFound: 0,
@@ -75,6 +77,17 @@ const Dashboard = () => {
       })
     } catch (error) {
       console.error('Error loading admin stats:', error)
+      // If user is not admin or authentication fails, set default values
+      setAdminStats({
+        totalUsers: 0,
+        activeProjects: 0,
+        scansToday: 0,
+        systemCritical: 0
+      })
+      // Don't show admin features if access is denied
+      if (error instanceof Error && error.message.includes('Access denied')) {
+        setIsAdmin(false)
+      }
     }
   }
 
@@ -152,15 +165,15 @@ const Dashboard = () => {
     }
   ]
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('tr-TR', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    })
-  }
+  // const formatDate = (dateString: string) => {
+  //   return new Date(dateString).toLocaleDateString('tr-TR', {
+  //     year: 'numeric',
+  //     month: 'short',
+  //     day: 'numeric',
+  //     hour: '2-digit',
+  //     minute: '2-digit'
+  //   })
+  // }
 
   return (
     <div className="pt-32 px-4">
@@ -243,6 +256,9 @@ const Dashboard = () => {
         </div>
 
         {/* Tab Content */}
+        <div className="grid grid-cols-1 xl:grid-cols-4 gap-8">
+          {/* Main Content */}
+          <div className="xl:col-span-3">
         <motion.div
           key={selectedTab}
           initial={{ opacity: 0, x: 20 }}
@@ -324,7 +340,22 @@ const Dashboard = () => {
             </div>
           )}
         </motion.div>
+          </div>
+
+          {/* Sidebar with Buy Me a Coffee */}
+          <div className="xl:col-span-1">
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.4 }}
+            >
+              <BuyMeCoffeeQR />
+            </motion.div>
+          </div>
+        </div>
       </div>
+      
+      <Footer />
     </div>
   )
 }

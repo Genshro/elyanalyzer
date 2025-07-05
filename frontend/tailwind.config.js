@@ -36,11 +36,29 @@ export default {
         'float': 'float 6s ease-in-out infinite',
         'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
         'bounce-slow': 'bounce 3s infinite',
+        'spin-slow': 'spin 8s linear infinite',
+        'glow': 'glow 2s ease-in-out infinite alternate',
+        'particle-float': 'particleFloat 4s ease-in-out infinite',
+        'gradient-shift': 'gradientShift 3s ease-in-out infinite',
       },
       keyframes: {
         float: {
           '0%, 100%': { transform: 'translateY(0px)' },
           '50%': { transform: 'translateY(-20px)' },
+        },
+        glow: {
+          '0%': { boxShadow: '0 0 20px rgba(99, 102, 241, 0.5)' },
+          '100%': { boxShadow: '0 0 40px rgba(168, 85, 247, 0.8), 0 0 60px rgba(99, 102, 241, 0.3)' },
+        },
+        particleFloat: {
+          '0%, 100%': { transform: 'translateY(0px) translateX(0px)' },
+          '25%': { transform: 'translateY(-10px) translateX(5px)' },
+          '50%': { transform: 'translateY(-20px) translateX(-5px)' },
+          '75%': { transform: 'translateY(-10px) translateX(10px)' },
+        },
+        gradientShift: {
+          '0%, 100%': { backgroundPosition: '0% 50%' },
+          '50%': { backgroundPosition: '100% 50%' },
         }
       }
     },

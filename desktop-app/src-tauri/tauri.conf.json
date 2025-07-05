@@ -1,7 +1,7 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
   "productName": "ElyAnalyzer Desktop",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "identifier": "com.elyanalyzer.desktop",
   "build": {
     "beforeDevCommand": "npm run dev",
@@ -30,12 +30,13 @@
       }
     ],
     "security": {
-      "csp": null
+      "csp": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' fonts.googleapis.com; font-src 'self' fonts.gstatic.com; img-src 'self' data: blob: https: tauri:; connect-src 'self' https://*.supabase.co wss://*.supabase.co tauri: ipc: http://ipc.localhost; frame-ancestors 'none'"
     }
   },
   "bundle": {
     "active": true,
-    "targets": ["msi"],
+    "targets": "all",
+    "publisher": "ElyAnalyzer Team",
     "icon": [
       "icons/32x32.png",
       "icons/128x128.png",
@@ -43,42 +44,27 @@
       "icons/icon.icns",
       "icons/icon.ico"
     ],
-    "resources": [],
-    "externalBin": [
-      "binaries/analysis-engine"
+    "resources": [
+      "binaries/analysis-engine.exe"
     ],
-    "publisher": "ElyAnalyzer",
-    "copyright": "Copyright © 2024 ElyAnalyzer. All rights reserved.",
+    "externalBin": [],
+    "copyright": "Copyright © 2024 ElyAnalyzer Team",
     "category": "DeveloperTool",
-    "shortDescription": "Free Code Analysis Tool",
-    "longDescription": "ElyAnalyzer Desktop is a free, open-source code analysis platform with 15 specialized analyzers for security, performance, and code quality assessment.",
-    "homepage": "https://elyanalyzer.com",
-    "license": "MIT",
-    "licenseFile": "../LICENSE",
-    "windows": {
-      "certificateThumbprint": null,
-      "digestAlgorithm": "sha256",
-      "timestampUrl": "",
-      "allowDowngrades": true,
-      "wix": {
-        "language": "en-US"
+    "shortDescription": "AI-powered code analysis platform",
+    "longDescription": "ElyAnalyzer is a privacy-focused, AI-powered code analysis platform that helps developers detect errors, security vulnerabilities, and improve code quality.",
+    "linux": {
+      "deb": {
+        "depends": []
       }
     },
     "macOS": {
       "frameworks": [],
-      "minimumSystemVersion": "10.13",
-      "exceptionDomain": "",
-      "signingIdentity": null,
-      "providerShortName": null,
-      "entitlements": null
+      "minimumSystemVersion": ""
     },
-    "linux": {
-      "deb": {
-        "depends": []
-      },
-      "appimage": {
-        "bundleMediaFramework": false
-      }
+    "windows": {
+      "certificateThumbprint": null,
+      "digestAlgorithm": "sha256",
+      "timestampUrl": ""
     }
   }
 }

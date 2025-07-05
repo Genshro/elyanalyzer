@@ -7,6 +7,13 @@ const host = process.env.TAURI_DEV_HOST;
 // https://vitejs.dev/config/
 export default defineConfig(async () => ({
   plugins: [react()],
+  
+  // Environment variables konfigürasyonu
+  define: {
+    // Production build'de placeholder değerler kullan
+    'import.meta.env.VITE_SUPABASE_URL': JSON.stringify('YOUR_SUPABASE_URL'),
+    'import.meta.env.VITE_SUPABASE_ANON_KEY': JSON.stringify('YOUR_SUPABASE_ANON_KEY'),
+  },
 
   // Vite options tailored for Tauri development and only applied in `tauri dev` or `tauri build`
   //

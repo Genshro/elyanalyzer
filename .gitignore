@@ -20,7 +20,7 @@ target/
 
 # Dependencies
 node_modules/
-*/node_modules/
+**/node_modules/
 vendor/
 
 # Environment files
@@ -28,15 +28,20 @@ vendor/
 .env.local
 .env.production
 .env.development
-*.env
+**/.env
+**/.env.*
 
 # Database
 *.db
 *.sqlite
+*.sqlite3
 
 # Logs
 *.log
 logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
 # IDE
 .vscode/
@@ -91,4 +96,115 @@ binaries/
 scanner
 scanner.exe
 analysis-engine
-analysis-engine.exe 
+analysis-engine.exe
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+
+# nyc test coverage
+.nyc_output
+
+# Dependency directories
+jspm_packages/
+
+# Snowpack dependency directory (https://snowpack.dev/)
+web_modules/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Microbundle cache
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# dotenv environment variables file
+.env.test
+
+# parcel-bundler cache (https://parceljs.org/)
+.cache
+.parcel-cache
+
+# Next.js build output
+.next
+
+# Nuxt.js build / generate output
+.nuxt
+dist
+
+# Gatsby files
+.cache/
+public
+
+# Storybook build outputs
+.out
+.storybook-out
+
+# Editor directories and files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Tauri specific
+src-tauri/target/
+src-tauri/gen/
+
+# Rust specific
+**/*.rs.bk
+Cargo.lock
+
+# Sensitive files - DO NOT COMMIT
+backend/.env
+backend/config.json
+**/supabase_service_key*
+**/database_password*
+**/api_keys*
+**/secrets*
+
+# Analysis results and reports
+reports/
+uploads/
+analysis_results/
+*.pdf
+*.json.analysis
+
+# Database dumps and backups
+*.sql.backup
+*.dump
+database_backup/
+
+# Exclude specific sensitive files
+README.md
+backend/main.go
+backend/config.go
+backend/supabase.go
+check_db.js
+check_schema.js
+debug_frontend.js
+fix_schema.js
+hata
+
+# Keep binaries for download
+!desktop-app/src-tauri/binaries/ 

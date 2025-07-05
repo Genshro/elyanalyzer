@@ -42,8 +42,10 @@ function App() {
   useEffect(() => {
     // Check if user is already logged in
     const checkAuth = async () => {
-      const currentUser = await authService.getCurrentUser();
-      setUser(currentUser);
+      const { data: { user }, error } = await authService.getCurrentUser();
+      if (!error && user) {
+        setUser(user);
+      }
       setIsLoading(false);
     };
 
@@ -62,12 +64,12 @@ function App() {
     setIsLoginLoading(true);
     setLoginError(null);
 
-    const { user, error } = await authService.signIn(email, password);
+    const { data, error } = await authService.signIn(email, password);
     
     if (error) {
-      setLoginError(error);
-    } else {
-      setUser(user);
+      setLoginError(typeof error === 'string' ? error : (error as any)?.message || 'Login failed');
+    } else if (data?.user) {
+      setUser(data.user);
     }
     
     setIsLoginLoading(false);
@@ -76,8 +78,14 @@ function App() {
 
 
   const handleLogout = async () => {
-    await authService.signOut();
-    setUser(null);
+    try {
+      await authService.signOut();
+      setUser(null);
+    } catch (error) {
+      console.error('Logout error:', error);
+      // Force logout even if there's an error
+      setUser(null);
+    }
   };
 
   // Show loading spinner while checking auth
@@ -141,6 +149,161 @@ function App() {
     }
   }
 
+  // 🆕 Dashboard'a veri gönderme fonksiyonları
+  const extractCategoryScores = (analysisResults: any) => {
+    const issues = analysisResults?.issues || [];
+    
+    // Her kategori için issue'ları say ve skor hesapla
+    const categories = [
+      'security', 'code_quality', 'performance', 'accessibility', 'documentation',
+      'architecture', 'testing', 'logging', 'dependencies', 'compliance',
+      'ai_hallucinations', 'mobile_crossplatform', 'error_handling', 'api_design', 'database'
+    ];
+    
+    return categories.map(category => {
+      const categoryIssues = issues.filter((issue: any) => 
+        issue.category === category || issue.type?.includes(category)
+      );
+      
+      const critical = categoryIssues.filter((issue: any) => 
+        issue.severity === 'critical' || issue.severity === 'high'
+      ).length;
+      
+      const warning = categoryIssues.filter((issue: any) => 
+        issue.severity === 'warning' || issue.severity === 'medium'
+      ).length;
+      
+      const info = categoryIssues.filter((issue: any) => 
+        issue.severity === 'info' || issue.severity === 'low'
+      ).length;
+      
+      // Basit skor hesaplama: 100 - (critical*10 + warning*5 + info*1)
+      const score = Math.max(0, Math.min(100, 100 - (critical * 10 + warning * 5 + info * 1)));
+      
+      return {
+        category_name: category,
+        display_name: getCategoryDisplayName(category),
+        score: score,
+        max_score: 100,
+        issue_count: categoryIssues.length,
+        critical_issues: critical,
+        warning_issues: warning,
+        info_issues: info,
+        improvements: getImprovementSuggestions(category, categoryIssues),
+        trend: 'stable', // İlk tarama için stable
+        icon: getCategoryIcon(category),
+        created_at: new Date().toISOString()
+      };
+    });
+  };
+
+  const getCategoryDisplayName = (category: string): string => {
+    const mapping: { [key: string]: string } = {
+      'security': 'Security Analysis',
+      'code_quality': 'Code Quality',
+      'performance': 'Performance',
+      'accessibility': 'Accessibility',
+      'documentation': 'Documentation',
+      'architecture': 'Architecture',
+      'testing': 'Testing',
+      'logging': 'Logging',
+      'dependencies': 'Dependencies',
+      'compliance': 'Compliance',
+      'ai_hallucinations': 'AI Hallucinations',
+      'mobile_crossplatform': 'Mobile & Cross-Platform',
+      'error_handling': 'Error Handling',
+      'api_design': 'API Design',
+      'database': 'Database'
+    };
+    return mapping[category] || category;
+  };
+
+  const getCategoryIcon = (category: string): string => {
+    const mapping: { [key: string]: string } = {
+      'security': '🔒',
+      'code_quality': '✨',
+      'performance': '🚀',
+      'accessibility': '♿',
+      'documentation': '📚',
+      'architecture': '🏗️',
+      'testing': '🧪',
+      'logging': '📝',
+      'dependencies': '📦',
+      'compliance': '⚖️',
+      'ai_hallucinations': '🤖',
+      'mobile_crossplatform': '📱',
+      'error_handling': '🚨',
+      'api_design': '🌐',
+      'database': '🗄️'
+    };
+    return mapping[category] || '📊';
+  };
+
+  const getImprovementSuggestions = (category: string, _issues: any[]): string[] => {
+    // Basit improvement önerileri
+    const suggestions: { [key: string]: string[] } = {
+      'security': ['Add input validation', 'Implement HTTPS', 'Use password hashing'],
+      'code_quality': ['Reduce complexity', 'Add comments', 'Follow SOLID principles'],
+      'performance': ['Add caching', 'Optimize queries', 'Implement lazy loading'],
+      'accessibility': ['Add ARIA labels', 'Improve contrast', 'Add keyboard navigation'],
+      'documentation': ['Add README', 'Document APIs', 'Add code comments']
+    };
+    
+    return suggestions[category] || ['Review and improve code quality'];
+  };
+
+  const sendToDashboard = async (analysisResults: any, userId: string) => {
+    try {
+      const categoryData = extractCategoryScores(analysisResults);
+      
+      // Proje adını al
+      let projectName = "Unknown Project";
+      if (analysisMode === "folder" && selectedFolder) {
+        projectName = selectedFolder.split(/[/\\]/).pop() || "Unknown Project";
+      } else if (analysisMode === "files" && selectedFiles.length > 0) {
+        const firstFile = selectedFiles[0];
+        const parentDir = firstFile.split(/[/\\]/).slice(-2, -1)[0];
+        projectName = parentDir || `Selected Files (${selectedFiles.length})`;
+      }
+
+      console.log('🔍 Offline mode - Storing analysis data locally for user:', userId);
+      console.log('📊 Project name:', projectName);
+      console.log('📈 Analysis results summary:', analysisResults?.summary);
+
+      // Offline mode - Store data in localStorage
+      const offlineData = {
+        userId,
+        projectName,
+        projectPath: analysisMode === "folder" ? selectedFolder : "Selected Files",
+        analysisResults,
+        categoryData,
+        timestamp: new Date().toISOString(),
+        totalFiles: analysisResults?.summary?.total_files || 0,
+        totalIssues: analysisResults?.summary?.issues_found || 0,
+        criticalIssues: analysisResults?.summary?.critical_issues || 0
+      };
+
+      // Store in localStorage for offline use
+      const existingData = localStorage.getItem('elyanalyzer-offline-analysis-data');
+      const allData = existingData ? JSON.parse(existingData) : [];
+      allData.push(offlineData);
+      
+      // Keep only last 50 analyses to prevent storage overflow
+      if (allData.length > 50) {
+        allData.splice(0, allData.length - 50);
+      }
+      
+      localStorage.setItem('elyanalyzer-offline-analysis-data', JSON.stringify(allData));
+
+      console.log('✅ Analysis data stored locally for offline use!');
+        
+    } catch (error) {
+      console.error('❌ Error storing offline analysis data:', error);
+    }
+  };
+
+  // Offline mode - getCategoryId function removed as it's not needed for local storage
+
   async function startAnalysis() {
     const hasTarget = analysisMode === "folder" ? selectedFolder : selectedFiles.length > 0;
     
@@ -197,7 +360,12 @@ function App() {
       // Store results for report generation
       setAnalysisResults(result);
       
-      if (!result.success) {
+      if (result.success) {
+        // 🆕 Analiz başarılı olduğunda dashboard'a gönder
+        if (user?.id && result.results) {
+          await sendToDashboard(result.results, user.id);
+        }
+      } else {
         alert(`Analysis failed: ${result.message}`);
       }
     } catch (error) {
@@ -240,6 +408,11 @@ function App() {
         analysisResults: analysisResults,
         projectName: projectName
       }) as string;
+      
+      // 🆕 PDF raporu oluşturulduktan sonra dashboard'a veri gönder
+      if (user?.id && analysisResults) {
+        await sendToDashboard(analysisResults, user.id);
+      }
       
       alert(`Report generated successfully!\n\n${reportPath}`);
     } catch (error) {

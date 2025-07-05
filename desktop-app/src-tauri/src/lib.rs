@@ -18,6 +18,358 @@ pub struct AnalysisResult {
     pub results: Option<serde_json::Value>,
 }
 
+#[derive(Debug, Serialize, Deserialize)]
+pub struct CategoryScore {
+    pub category_name: String,
+    pub display_name: String,
+    pub score: f64,
+    pub critical_issues: i32,
+    pub warning_issues: i32,
+    pub info_issues: i32,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct DashboardData {
+    pub project_name: String,
+    pub user_id: String,
+    pub category_scores: Vec<CategoryScore>,
+}
+
+// DISABLED: Old Rust dashboard sending - now handled by TypeScript in App.tsx
+async fn _send_to_dashboard_old(analysis_results: &serde_json::Value, project_path: &str) -> Result<(), Box<dyn std::error::Error>> {
+    let _client = reqwest::Client::new();
+    
+    // Extract project name from path
+    let _project_name = std::path::Path::new(project_path)
+        .file_name()
+        .and_then(|name| name.to_str())
+        .unwrap_or("Unknown Project");
+
+    // Extract category scores from analysis results
+    let _category_scores = extract_category_scores(analysis_results);
+    
+    // Count total issues and files from analysis results
+    let _total_issues: i32 = _category_scores.iter()
+        .map(|cs| cs.critical_issues + cs.warning_issues + cs.info_issues)
+        .sum();
+    
+    let _critical_issues: i32 = _category_scores.iter()
+        .map(|cs| cs.critical_issues)
+        .sum();
+        
+    // Get total files from analysis results
+    let _total_files = analysis_results
+        .get("summary")
+        .and_then(|s| s.get("total_files"))
+        .and_then(|f| f.as_i64())
+        .unwrap_or(0) as i32;
+    
+    // DISABLED: This was causing issues with hardcoded project_id
+    // Now handled properly by TypeScript code in App.tsx with user-specific projects
+    
+    println!("⚠️ Dashboard sending is now handled by TypeScript frontend");
+    Ok(())
+}
+
+#[allow(dead_code)]
+fn calculate_overall_score(category_scores: &[CategoryScore]) -> f64 {
+    if category_scores.is_empty() {
+        return 0.0;
+    }
+    
+    let total: f64 = category_scores.iter().map(|cs| cs.score).sum();
+    total / category_scores.len() as f64
+}
+
+#[allow(dead_code)]
+fn get_category_id(category_name: &str) -> String {
+    // Hardcoded category IDs based on REAL analyzers from analysis-engine/analyzers/
+    match category_name {
+        // Core analyzer categories (from real analyzer files)
+        "security" => "11111111-1111-1111-1111-111111111111".to_string(),
+        "code_quality" => "22222222-2222-2222-2222-222222222222".to_string(),
+        "performance" => "33333333-3333-3333-3333-333333333333".to_string(),
+        "accessibility" => "44444444-4444-4444-4444-444444444444".to_string(),
+        "documentation" => "55555555-5555-5555-5555-555555555555".to_string(),
+        "testing" => "66666666-6666-6666-6666-666666666666".to_string(),
+        "dependencies" => "77777777-7777-7777-7777-777777777777".to_string(),
+        "architecture" => "88888888-8888-8888-8888-888888888888".to_string(),
+        "error_handling" => "99999999-9999-9999-9999-999999999999".to_string(),
+        "api_design" => "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa".to_string(),
+        "database" => "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb".to_string(),
+        "compliance" => "cccccccc-cccc-cccc-cccc-cccccccccccc".to_string(),
+        "mobile" => "dddddddd-dddd-dddd-dddd-dddddddddddd".to_string(),
+        "logging" => "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee".to_string(),
+        "ai_hallucinations" => "ffffffff-ffff-ffff-ffff-ffffffffffff".to_string(),
+        _ => "00000000-0000-0000-0000-000000000000".to_string(), // fallback
+    }
+}
+
+#[allow(dead_code)]
+fn extract_category_scores(analysis_results: &serde_json::Value) -> Vec<CategoryScore> {
+    // Create default empty vector for fallback
+    let empty_vec = vec![];
+    let issues = analysis_results
+        .get("issues")
+        .and_then(|i| i.as_array())
+        .unwrap_or(&empty_vec);
+
+    let summary = analysis_results.get("summary").unwrap_or(&serde_json::Value::Null);
+    
+    // Extract total counts (not used but kept for potential future use)
+    let _warning_total = summary
+        .get("warning_total")
+        .and_then(|v| v.as_i64())
+        .unwrap_or(0) as i32;
+    
+    let _info_total = summary
+        .get("info_total")
+        .and_then(|v| v.as_i64())
+        .unwrap_or(0) as i32;
+
+    // Define the 15 categories based on REAL analyzers from analysis-engine/analyzers/
+    let categories = [
+        ("security", "Security Analysis"),
+        ("code_quality", "Code Quality"),
+        ("performance", "Performance"),
+        ("accessibility", "Accessibility"),
+        ("documentation", "Documentation"),
+        ("testing", "Testing Coverage"),
+        ("dependencies", "Dependencies"),
+        ("architecture", "Architecture"),
+        ("error_handling", "Error Handling"),
+        ("api_design", "API Design"),
+        ("database", "Database Analysis"),
+        ("compliance", "Compliance & Privacy"),
+        ("mobile", "Mobile & Cross-Platform"),
+        ("logging", "Logging & Observability"),
+        ("ai_hallucinations", "AI Hallucinations")
+    ];
+
+    let mut category_scores = Vec::new();
+
+    for (category_name, display_name) in categories.iter() {
+        let mut critical_count = 0;
+        let mut warning_count = 0;
+        let mut info_count = 0;
+
+        // Count issues by category and severity
+        for issue in issues {
+            if let Some(issue_category) = get_issue_category(issue) {
+                if issue_category == *category_name {
+                    let severity = get_issue_severity(issue);
+                    let issue_type = issue.get("type").and_then(|t| t.as_str()).unwrap_or("unknown");
+                    
+                    // Code Quality kategorisi için özel debugging
+                    if *category_name == "code_quality" {
+                        println!("🔍 Code Quality issue: {} -> {} (severity: {})", issue_type, severity, 
+                                issue.get("severity").and_then(|s| s.as_str()).unwrap_or("none"));
+                    }
+                    
+                    match severity.as_str() {
+                        "error" | "critical" => {
+                            critical_count += 1;
+                            if critical_count <= 3 || *category_name == "code_quality" { 
+                                println!("🔴 Critical issue in {}: {} ({})", category_name, issue_type, severity);
+                            }
+                        },
+                        "warning" => {
+                            warning_count += 1;
+                            if warning_count <= 3 || *category_name == "code_quality" { 
+                                println!("🟡 Warning issue in {}: {} ({})", category_name, issue_type, severity);
+                            }
+                        },
+                        "info" | "note" => {
+                            info_count += 1;
+                            if *category_name == "code_quality" && info_count <= 3 {
+                                println!("🔵 Info issue in {}: {} ({})", category_name, issue_type, severity);
+                            }
+                        },
+                        _ => {
+                            info_count += 1;
+                            println!("❓ Unknown severity '{}' for {}: {}", severity, category_name, issue_type);
+                        }
+                    }
+                }
+            }
+        }
+
+        // Calculate score (0-100, higher is better) - REALISTIC ALGORITHM FOR LARGE PROJECTS
+        let total_issues = critical_count + warning_count + info_count;
+        let score = if total_issues == 0 {
+            100.0
+        } else {
+            // Use logarithmic scaling for very large projects
+            let critical_impact = if critical_count == 0 { 
+                0.0 
+            } else { 
+                30.0 - (30.0 / (1.0 + (critical_count as f64 / 100.0)))
+            };
+            
+            let warning_impact = if warning_count == 0 { 
+                0.0 
+            } else { 
+                25.0 - (25.0 / (1.0 + (warning_count as f64 / 1000.0)))
+            };
+            
+            let info_impact = if info_count == 0 { 
+                0.0 
+            } else { 
+                15.0 - (15.0 / (1.0 + (info_count as f64 / 5000.0)))
+            };
+            
+            let total_penalty = critical_impact + warning_impact + info_impact;
+            let final_score = 100.0 - total_penalty;
+            
+            // Ensure score is between 0 and 100
+            final_score.max(0.0).min(100.0)
+        };
+
+        category_scores.push(CategoryScore {
+            category_name: category_name.to_string(),
+            display_name: display_name.to_string(),
+            score,
+            critical_issues: critical_count,
+            warning_issues: warning_count,
+            info_issues: info_count,
+        });
+    }
+
+    category_scores
+}
+
+#[allow(dead_code)]
+fn get_issue_category(issue: &serde_json::Value) -> Option<String> {
+    // Get issue type and description
+    let issue_type = issue.get("type")
+        .and_then(|t| t.as_str())
+        .unwrap_or("");
+    
+    let description = issue.get("description")
+        .and_then(|d| d.as_str())
+        .unwrap_or("");
+    
+    let _severity = issue.get("severity")
+        .and_then(|s| s.as_str())
+        .unwrap_or("");
+
+    // Map based on REAL analyzer issue types from analysis-engine/analyzers/
+    match issue_type {
+        // SECURITY ANALYZER (security.go)
+        "input_validation_missing" | "sql_injection_risk" | "xss_vulnerability" | 
+        "csrf_vulnerability" | "authentication_weakness" | "authorization_missing" |
+        "insecure_data_storage" | "insecure_api_call" | "https_missing" | 
+        "outdated_dependency" | "session_management_issue" | "security_logging_missing" |
+        "rate_limiting_missing" | "vulnerable_dependency" | "secret_exposure" |
+        "deployment_security_issue" => Some("security".to_string()),
+        
+        // PERFORMANCE ANALYZER (performance.go)
+        "performance_issue" | "caching_missing" | "memory_leak_risk" | 
+        "slow_database_query" | "slow_response_time" | "performance_bottleneck" => Some("performance".to_string()),
+        
+        // CODE QUALITY ANALYZER (code_quality.go)
+        "code_duplication" | "high_cyclomatic_complexity" | "poor_code_readability" |
+        "solid_principle_violation" | "comment_issue" | "refactor_needed" |
+        "testability_issue" | "design_pattern_missing" | "dependency_injection_missing" |
+        "inconsistent_naming_pattern" | "ai_generated_placeholder" | "unused_import" |
+        "incomplete_implementation" | "framework_mismatch" | "over_engineering" |
+        "deprecated_import" | "missing_header_guard" => Some("code_quality".to_string()),
+        
+        // ACCESSIBILITY ANALYZER (accessibility.go)
+        "accessibility_issue" | "ux_issue" | "mobile_compatibility_issue" |
+        "contrast_issue" => Some("accessibility".to_string()),
+        
+        // DOCUMENTATION ANALYZER (documentation.go)
+        "documentation_missing" | "documentation_quality_issue" | 
+        "api_documentation_missing" | "user_documentation_missing" |
+        "architecture_documentation_missing" => Some("documentation".to_string()),
+        
+        // TESTING ANALYZER (testing.go)
+        "test_missing" | "low_test_coverage" | "test_not_isolated" |
+        "mocking_issue" | "ci_pipeline_missing" => Some("testing".to_string()),
+        
+        // DEPENDENCIES ANALYZER (dependencies.go)
+        "missing_required_import" | "unused_dependency" | "too_many_dependencies" |
+        "singleton_misuse" | "typescript_type_error" | "license_conflict" |
+        "legal_risk" | "missing_package_dependency" | "versioning_issue" => Some("dependencies".to_string()),
+        
+        // ARCHITECTURE ANALYZER (architecture.go)
+        "multiple_same_services" | "config_file_conflict" | "wrong_directory_structure" |
+        "backend_frontend_integration_error" | "architecture_issue" |
+        "dip_violation" | "isp_violation" | "missing_dependency_injection" |
+        "lsp_violation_type_check" | "ocp_violation_ifelse" | "ocp_violation_switch" |
+        "duplicate_entity_files" | "circular_dependency" => Some("architecture".to_string()),
+        
+        // ERROR HANDLING ANALYZER (error_handling.go)
+        "error_handling_issue" | "insufficient_logging" | "wrong_log_level" |
+        "pii_exposure_in_logs" | "monitoring_missing" | "distributed_tracing_missing" => Some("error_handling".to_string()),
+        
+        // API DESIGN ANALYZER (api_design.go)
+        "api_design_issue" | "missing_api_versioning" | "missing_pagination" |
+        "caching_missing_api" | "insecure_api_design" | "performance_issue_api" |
+        "graphql_issue" | "microservices_issue" | "rest_compliance_issue" |
+        "api_consistency_issue" | "content_negotiation_issue" | 
+        "async_pattern_missing" | "security_headers_missing" => Some("api_design".to_string()),
+        
+        // DATABASE ANALYZER (database.go)
+        "database_column_mismatch" | "database_index_missing" | "database_issue" => Some("database".to_string()),
+        
+        // COMPLIANCE ANALYZER (compliance.go)
+        "gdpr_violation" | "compliance_issue" | "privacy_policy_missing" => Some("compliance".to_string()),
+        
+        // MOBILE/CROSS-PLATFORM ANALYZER (mobile_crossplatform.go)
+        "missing_expo_config" | "localstorage_in_mobile" => Some("mobile".to_string()),
+        
+        // LOGGING ANALYZER (logging.go)
+        "logging_insufficient" => Some("logging".to_string()),
+        
+        // AI HALLUCINATIONS ANALYZER (ai_hallucinations.go)
+        "ai_hallucination" | "missing_auth_context" => Some("ai_hallucinations".to_string()),
+        
+        _ => {
+            // Fallback: categorize based on description content
+            let desc_lower = description.to_lowercase();
+            if desc_lower.contains("security") || desc_lower.contains("vulnerability") {
+                Some("security".to_string())
+            } else if desc_lower.contains("performance") || desc_lower.contains("memory") {
+                Some("performance".to_string())
+            } else if desc_lower.contains("test") {
+                Some("testing".to_string())
+            } else if desc_lower.contains("document") {
+                Some("documentation".to_string())
+            } else if desc_lower.contains("error") {
+                Some("error_handling".to_string())
+            } else if desc_lower.contains("complex") {
+                Some("complexity".to_string())
+            } else if desc_lower.contains("architect") {
+                Some("architecture".to_string())
+            } else if desc_lower.contains("depend") {
+                Some("dependencies".to_string())
+            } else if desc_lower.contains("compliance") || desc_lower.contains("gdpr") {
+                Some("reliability".to_string())
+            } else {
+                // Default to code_quality for unmatched issues
+                Some("code_quality".to_string())
+            }
+        }
+    }
+}
+
+#[allow(dead_code)]
+fn get_issue_severity(issue: &serde_json::Value) -> String {
+    let original_severity = issue.get("severity")
+        .and_then(|s| s.as_str())
+        .unwrap_or("info");
+    
+    // Map analysis engine severity levels to our expected format
+    match original_severity {
+        "high" | "error" | "critical" => "critical".to_string(),
+        "medium" | "warning" | "warn" => "warning".to_string(),
+        "low" | "info" | "note" | "informational" => "info".to_string(),
+        _ => "info".to_string(), // Default fallback
+    }
+}
+
 #[tauri::command]
 fn greet(name: &str) -> String {
     format!("Hello, {}! You've been greeted from Rust!", name)
@@ -82,16 +434,21 @@ async fn run_analysis(app: tauri::AppHandle, request: AnalysisRequest) -> Result
     
     // First try to get the bundled binary using Tauri's resource resolver
     let resource_dir = app.path().resource_dir().map_err(|e| format!("Failed to get resource dir: {}", e))?;
+    println!("🔍 Resource dir: {:?}", resource_dir);
     
     // Try different possible locations for the bundled binary
     let possible_bundled_paths = vec![
-        resource_dir.join("binaries").join("analysis-engine.exe"), // Original expected location
         resource_dir.join("analysis-engine.exe"), // MSI puts it in root
+        resource_dir.join("analysis-engine.exe-x86_64-pc-windows-msvc.exe"), // Platform specific
+        resource_dir.join("binaries").join("analysis-engine.exe"), // Original expected location
+        app.path().app_local_data_dir().unwrap_or_default().join("analysis-engine.exe"), // App data dir
+        app.path().app_data_dir().unwrap_or_default().join("analysis-engine.exe"), // App data dir
     ];
     
-    for bundled_path in possible_bundled_paths {
+    for bundled_path in &possible_bundled_paths {
+        println!("🔍 Checking path: {:?} - exists: {}", bundled_path, bundled_path.exists());
         if bundled_path.exists() {
-            binary_path = Some(bundled_path);
+            binary_path = Some(bundled_path.clone());
             println!("🔍 Found bundled binary: {:?}", binary_path);
             break;
         }
@@ -123,7 +480,15 @@ async fn run_analysis(app: tauri::AppHandle, request: AnalysisRequest) -> Result
         }
     }
 
-    let binary_path = binary_path.ok_or_else(|| "Analysis engine binary not found".to_string())?;
+    let binary_path = binary_path.ok_or_else(|| {
+        let error_msg = format!("Analysis engine binary not found. Searched paths:\n{}", 
+            possible_bundled_paths.iter()
+                .map(|p| format!("  - {:?}", p))
+                .collect::<Vec<_>>()
+                .join("\n"));
+        println!("🚨 {}", error_msg);
+        error_msg
+    })?;
 
     // Debug: Print which binary is being used
     println!("🔍 Using binary: {:?}", binary_path);
@@ -219,6 +584,15 @@ async fn run_analysis(app: tauri::AppHandle, request: AnalysisRequest) -> Result
         println!("🔍 JSON Output Length: {}", json_output.len());
         println!("🔍 JSON First 500 chars: {}", &json_output.chars().take(500).collect::<String>());
         
+        // Debug: Save raw output to file for MSI debugging
+        if let Ok(app_dir) = app.path().app_local_data_dir() {
+            let debug_file = app_dir.join("debug_analysis_output.txt");
+            if let Ok(mut file) = std::fs::File::create(&debug_file) {
+                use std::io::Write;
+                let _ = writeln!(file, "Raw stdout:\n{}\n\nJSON part:\n{}", stdout, json_output);
+            }
+        }
+        
         // Try to parse JSON
         if let Ok(results) = serde_json::from_str::<serde_json::Value>(&json_output) {
             // Debug: Print the structure
@@ -256,6 +630,8 @@ async fn run_analysis(app: tauri::AppHandle, request: AnalysisRequest) -> Result
             })
         } else {
             // If JSON parsing fails, create clean fallback
+            println!("🚨 JSON parsing failed! Raw JSON: {}", &json_output.chars().take(1000).collect::<String>());
+            
             let mut file_count = 0;
             let mut issue_count = 0;
             
@@ -379,6 +755,11 @@ async fn generate_pdf_report(app: tauri::AppHandle, analysis_results: serde_json
         .map_err(|e| format!("Failed to serialize JSON: {}", e))?;
     fs::write(&json_path, json_content)
         .map_err(|e| format!("Failed to write JSON report: {}", e))?;
+    
+    // DISABLED: Dashboard sending now handled by TypeScript in App.tsx
+    // This ensures user-specific project creation and proper data flow
+    println!("⚠️ Dashboard sending is now handled by TypeScript frontend");
+    // Old Rust code was using hardcoded project_id which caused data isolation issues
     
     Ok(format!("Reports saved:\n- HTML: {}\n- JSON: {}", 
         html_path.to_string_lossy(), 
@@ -774,7 +1155,6 @@ fn generate_results_html(analysis_results: &serde_json::Value) -> String {
     html
 }
 
-#[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
@@ -790,3 +1170,4 @@ pub fn run() {
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
+

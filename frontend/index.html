@@ -4,11 +4,67 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ElyAnalyzer - Intelligent Code Analysis</title>
-    <meta name="description" content="AI-powered code analysis tool that detects errors and inconsistencies in AI-generated code">
+    
+    <!-- DNS Prefetch for external resources -->
+    <link rel="dns-prefetch" href="//www.elyanalyzer.com">
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="//unpkg.com">
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="/elyanalyzer-logo.svg" as="image" type="image/svg+xml">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" as="style">
+    
+    <!-- Security Headers -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+    <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), payment=()">
+    
+    <!-- Content Security Policy -->
+    <meta http-equiv="Content-Security-Policy" content="
+      default-src 'self';
+      script-src 'self' 'unsafe-inline' 'unsafe-eval';
+      style-src 'self' 'unsafe-inline' fonts.googleapis.com;
+      font-src 'self' fonts.gstatic.com;
+      img-src 'self' data: blob: https:;
+      connect-src 'self' http://localhost:* ws://localhost:* https://*.supabase.co wss://*.supabase.co;
+      frame-ancestors 'none';
+      base-uri 'self';
+      form-action 'self';
+      object-src 'none';
+    ">
+    
+    <title>ElyAnalyzer - AI-Powered Code Analysis</title>
+    <meta name="description" content="ElyAnalyzer - AI-powered code analysis tool with 15 specialized analyzers for comprehensive code quality assessment.">
+    <meta name="keywords" content="code analysis, static analysis, code quality, software development, AI, machine learning">
+    <meta name="author" content="ElyAnalyzer Team">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.elyanalyzer.com/">
+    <meta property="og:title" content="ElyAnalyzer - AI-Powered Code Analysis">
+    <meta property="og:description" content="Professional code analysis tool with 15 specialized analyzers for comprehensive code quality assessment.">
+    <meta property="og:image" content="https://www.elyanalyzer.com/elyanalyzer-logo.svg">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://www.elyanalyzer.com/">
+    <meta property="twitter:title" content="ElyAnalyzer - AI-Powered Code Analysis">
+    <meta property="twitter:description" content="Professional code analysis tool with 15 specialized analyzers for comprehensive code quality assessment.">
+    <meta property="twitter:image" content="https://www.elyanalyzer.com/elyanalyzer-logo.svg">
+    
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Theme color -->
+    <meta name="theme-color" content="#3B82F6">
+    <meta name="msapplication-TileColor" content="#0f172a">
   </head>
   <body class="font-inter bg-dark-900">
     <div id="root"></div>

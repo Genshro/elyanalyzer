@@ -49,8 +49,8 @@ interface AnalysisNotification {
   timestamp: number
 }
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api'
-const WS_URL = 'ws://localhost:8080/ws'
+const API_BASE = import.meta.env.VITE_API_BASE_URL || '/api'
+const WS_URL = import.meta.env.VITE_WS_URL || `${window.location.protocol === 'https:' ? 'wss:' : 'ws:'}//${window.location.host}/ws`
 
 class AnalysisAPI {
   private ws: WebSocket | null = null

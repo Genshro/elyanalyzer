@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { EyeIcon, EyeSlashIcon, EnvelopeIcon, LockClosedIcon, UserIcon } from '@heroicons/react/24/outline'
 import { toast } from 'react-hot-toast'
 import { authHelpers } from '../lib/supabase'
+import Footer from '../components/Footer'
 
 const Register = () => {
   const navigate = useNavigate()
@@ -65,18 +66,18 @@ const Register = () => {
       const { data, error } = await authHelpers.signUp(formData.email, formData.password, formData.name)
       
       if (error) {
-        if (error.message.includes('already registered')) {
+        if (typeof error === 'object' && error && 'message' in error && typeof error.message === 'string' && error.message.includes('already registered')) {
           toast.error('This email is already registered. Please login instead.')
         } else {
-          toast.error(error.message || 'Registration failed. Please try again.')
+          toast.error(typeof error === 'object' && error && 'message' in error && typeof error.message === 'string' ? error.message : 'Registration failed. Please try again.')
         }
         return
       }
 
-      if (data.user && !data.session) {
+      if (data && data.user && !data.session) {
         toast.success('Registration successful! Please check your email to verify your account.')
         navigate('/login')
-      } else if (data.session) {
+      } else if (data && data.session) {
         toast.success('Account created successfully! Welcome to ElyAnalyzer!')
         navigate('/download')
       }
@@ -125,26 +126,27 @@ const Register = () => {
   }
 
   return (
-    <div className="pt-32 px-4 min-h-screen flex items-center justify-center">
-      <div className="max-w-md w-full">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="card p-8"
-        >
-          <div className="text-center mb-8">
-            <div className="flex justify-center mb-4">
-              <img 
-                            src="/elyanalyzer-logo.svg"
-            alt="ElyAnalyzer" 
-                className="h-16 w-16 drop-shadow-lg"
-              />
+    <div className="min-h-screen flex flex-col">
+      <div className="flex-1 pt-32 px-4 flex items-center justify-center">
+        <div className="max-w-md w-full">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="card p-8"
+          >
+            <div className="text-center mb-8">
+              <div className="flex justify-center mb-4">
+                <img 
+                              src="/elyanalyzer-logo.svg"
+              alt="ElyAnalyzer" 
+                  className="h-16 w-16 drop-shadow-lg"
+                />
+              </div>
+              <h1 className="text-3xl font-bold gradient-text mb-2">Get Started</h1>
+                            <p className="text-slate-400">Create your ElyAnalyzer account</p>
             </div>
-            <h1 className="text-3xl font-bold gradient-text mb-2">Get Started</h1>
-                          <p className="text-slate-400">Create your ElyAnalyzer account</p>
-          </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label htmlFor="name" className="block text-sm font-medium text-slate-200 mb-2">
                 Full Name
@@ -320,9 +322,12 @@ const Register = () => {
                 Sign in
               </Link>
             </p>
-          </div>
-        </motion.div>
+            </div>
+          </motion.div>
+        </div>
       </div>
+      
+      <Footer />
     </div>
   )
 }
