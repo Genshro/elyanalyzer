@@ -1,0 +1,14 @@
+nohup: ignoring input
+2025/07/05 14:02:32 ✅ .env file loaded successfully
+2025/07/05 14:02:32 ⚠️  WARNING: Invalid int64 value for MAX_FILE_SIZE: 100MB, using default: 10485760
+2025/07/05 14:02:32 ✅ Configuration loaded successfully for production environment
+2025/07/05 14:02:32 🚀 Starting ElyAnalyzer Backend with Supabase integration
+🚀 Server starting on port 8080
+🏥 Health check: http://localhost:8080/health
+👥 Users API: http://localhost:8080/api/users
+🏗 Projects API: http://localhost:8080/api/projects
+📊 Analysis API: http://localhost:8080/api/analysis
+🔍 Scan API: http://localhost:8080/api/scan
+🔗 WebSocket API: http://localhost:8080/ws
+🗄️ Database: Supabase REST API
+2025/07/05 14:02:32 listen tcp :8080: bind: address already in use
