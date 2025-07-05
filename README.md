@@ -222,9 +222,8 @@ For organizations requiring the complete analysis engine:
 - **Priority Support**: Dedicated technical support
 
 ### 📞 **Contact Information**
-- **📧 Email**: hello@elyanalyzer.com
+- **📧 Email**: genshro@icloud.com
 - **🌐 Website**: https://elyanalyzer.com
-- **💼 Enterprise Sales**: enterprise@elyanalyzer.com
 - **🐛 Bug Reports**: GitHub Issues
 
 ## 📄 License & Legal
