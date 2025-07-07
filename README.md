@@ -2,14 +2,14 @@
 
 ![ElyAnalyzer Logo](frontend/public/elyanalyzer-logo.svg)
 
-**ElyAnalyzer** is a comprehensive, 100% free and open-source code analysis platform that transforms complex codebases into clear, actionable insights. Built with privacy-first principles, our desktop application runs completely offline - your code never leaves your machine.
+**ElyAnalyzer** is a comprehensive, 80% free and open-source code analysis platform that transforms complex codebases into clear, actionable insights. Built with privacy-first principles, our desktop application runs completely offline - your code never leaves your machine.
 
 > 🌼 **"Accompanies you on your journey"** - From complexity to clarity, we're with you every step of the way.
 
 ## ✨ Core Features
 
 ### 🔒 **Privacy-First Architecture**
-- **100% Offline Processing**: Desktop app works without internet connection "not for special source code"
+- **80% Offline Processing**: Desktop app works without internet connection "not for special source code"
 - **No Data Transmission**: Your code stays on your machine, always
 - **Zero Tracking**: No analytics, no telemetry, no data collection
 - **Open Source**: Full transparency in our methods and processes
