@@ -9,7 +9,7 @@
 ## ✨ Core Features
 
 ### 🔒 **Privacy-First Architecture**
-- **100% Offline Processing**: Desktop app works without internet connection
+- **100% Offline Processing**: Desktop app works without internet connection "not for special source code"
 - **No Data Transmission**: Your code stays on your machine, always
 - **Zero Tracking**: No analytics, no telemetry, no data collection
 - **Open Source**: Full transparency in our methods and processes
