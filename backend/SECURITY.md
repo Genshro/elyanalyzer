@@ -195,13 +195,5 @@ Content-Security-Policy: default-src 'self'; ...
 - Access control verification
 - Data leakage assessment
 
-## 📞 Emergency Contacts
-
-- **Primary Security**: security@elyanalyzer.com
-- **Development Team**: dev@elyanalyzer.com  
-- **Infrastructure**: ops@elyanalyzer.com
-- **Supabase Support**: support@supabase.com
-
----
 
 **Security is a continuous process. This document is updated regularly to reflect the latest security measures and best practices.** 🛡️ 
