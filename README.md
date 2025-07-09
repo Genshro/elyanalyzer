@@ -2,7 +2,7 @@
 
 ![ElyAnalyzer Logo](frontend/public/elyanalyzer-logo.svg)
 
-**ElyAnalyzer** is a comprehensive, 80% "%20 just for private alaysis algorithms" free and open-source code analysis platform that transforms complex codebases into clear, actionable insights. Built with privacy-first principles, our desktop application runs completely offline - your code never leaves your machine.
+**ElyAnalyzer** 100% free code analysis platform featuring the world's first AI hallucination detector. Transform complex codebases into clear, actionable insights with complete privacy
 
 > 🌼 **"Accompanies you on your journey"** - From complexity to clarity, we're with you every step of the way.
 
@@ -258,6 +258,8 @@ For organizations requiring the complete analysis engine:
 
 **🌼 Ready to transform your code quality?** 
 
-[📥 Download ElyAnalyzer](https://elyanalyzer.com/download) | [🌟 Star on GitHub](https://github.com/Genshro/elyanalyzer) | [📚 Read the Docs](https://docs.elyanalyzer.com)
+[📥 Download ElyAnalyzer](https://elyanalyzer.com/download) | [🌟 Star on GitHub](https://github.com/Genshro/elyanalyzer) | [📚 Read the Docs](https://docs.elyanalyzer.com) 
+Ahmet Çetin
+genshro@icloud.com
 
 *Made with ❤️ in Bern, Switzerland 🇨🇭* 
